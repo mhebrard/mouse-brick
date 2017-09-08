@@ -7,7 +7,7 @@ let win;
 
 function createWindow() {
   // Create the browser window
-  win = new BrowserWindow();
+  win = new BrowserWindow({icon: path.join(__dirname, 'icon/png/64x64.png')});
   // Load index.html in the window
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
