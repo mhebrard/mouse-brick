@@ -14,9 +14,10 @@
 
   <script>
     require('./renderer.js')
-    const loadDB = require('./js/load-db.js');
-    loadDB.load()
-    .then(db => {
+    const db = require('./js/sql-db.js');
+    // Load database
+    db.load().then(() => {
+      // Request raw results
       var res = db.exec("SELECT * FROM hello");
       console.log('results', res);
     });

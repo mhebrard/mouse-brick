@@ -1,13 +1,14 @@
 const sql = require('sql.js');
 const fs = require('graceful-fs');
 
+// Global database
+let db;
+const dbPath = 'data/database.db';
+
+// Load existing database
+// Or create a new one
 module.exports.load = () => {
   return new Promise(resolve => {
-    // Global database
-    let db;
-    // DB path
-    const dbPath = 'data/database.db';
-
     // Check if DB exist
     if (fs.existsSync(dbPath)) {
       // Read db from disk
@@ -29,10 +30,18 @@ module.exports.load = () => {
       const buffer = Buffer.from(data);
       fs.writeFileSync(dbPath, buffer);
 
+      // Return db
       resolve(db);
     }
   }).catch(err => {
     console.log('ERROR in loadDB', err);
     return Promise.reject();
   });
-}
+};
+
+// Send request to db
+// Return the raw result
+// DO NOT save the database
+module.exports.exec = str => {
+  return db.exec(str);
+};
