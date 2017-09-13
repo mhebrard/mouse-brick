@@ -21,13 +21,21 @@ module.exports.load = () => {
       case 'Birth':
         $('#addEvent div.form-group').css('display', 'flex');
         $('#div-mouse').css('display', 'none');
-        $('#div-death').css('display', 'none');
+        $('#div-date').css('display', 'none');
         break;
       case 'Death':
         $('#addEvent div.form-group').css('display', 'none');
         $('#div-type').css('display', 'flex');
         $('#div-mouse').css('display', 'flex');
-        $('#div-death').css('display', 'flex');
+        $('#div-date').css('display', 'flex');
+        $('#div-submit').css('display', 'flex');
+        break;
+      case 'Move':
+        $('#addEvent div.form-group').css('display', 'none');
+        $('#div-type').css('display', 'flex');
+        $('#div-mouse').css('display', 'flex');
+        $('#div-date').css('display', 'flex');
+        $('#div-box').css('display', 'flex');
         $('#div-submit').css('display', 'flex');
         break;
       default:
@@ -58,11 +66,11 @@ module.exports.load = () => {
     switch ($('#type option:selected').text()) {
       case 'Birth': {
         const id = $('#id').val();
-        const birth = $('#birth').val();
+        const date = $('#birth').val();
         opts = {
           table: 'mice',
           id,
-          birth,
+          birth: date,
           death: null,
           sex: $('input[name=sex]:checked').val(),
           father: $('#father').val(),
@@ -78,7 +86,7 @@ module.exports.load = () => {
           label: 'birth',
           desc: 'the mouse is born',
           mouse: id,
-          start: birth,
+          start: date,
           end: null,
           day: 0
         };
@@ -87,7 +95,7 @@ module.exports.load = () => {
       }
       case 'Death': {
         const id = $('#mouse option:selected').text();
-        const date = $('#death').val();
+        const date = $('#date').val();
         opts = {
           table: 'mice',
           id,
@@ -107,6 +115,33 @@ module.exports.load = () => {
         db.insert(opts);
         break;
       }
+      case 'Move': {
+        const id = $('#mouse option:selected').text();
+        const date = $('#date').val();
+        const newbox = $('#box').val();
+        // Get oldbox
+        const res = db.select(`SELECT box FROM mice WHERE ID="${id}"`);
+        const oldbox = res[0].box;
+
+        opts = {
+          table: 'mice',
+          id,
+          set: `box="${newbox}"`
+        };
+        db.update(opts);
+        opts = {
+          table: 'events',
+          type: 'move',
+          label: 'move',
+          desc: `move the mouse from ${oldbox} to ${newbox}`,
+          mouse: id,
+          start: date,
+          end: null,
+          day: days(date, id)
+        };
+        db.insert(opts);
+        break;
+      }
       default:
     }
 
@@ -116,11 +151,9 @@ module.exports.load = () => {
 
 function days(date, id) {
   const res = db.select(`SELECT birth FROM mice WHERE ID="${id}"`);
-  console.log('days res', res);
   const oneDay = 24 * 60 * 60 * 1000; // Hours*minutes*seconds*milliseconds
   const start = new Date(res[0].birth);
   const end = new Date(date);
   const day = Math.round(Math.abs((start.getTime() - end.getTime()) / (oneDay)));
-  console.log(start, end, day);
-  return day
+  return day;
 }

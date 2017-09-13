@@ -21,7 +21,7 @@ module.exports.load = () => {
   // Get Mices
   let res = db.select('SELECT ID, birth, death, sex FROM mice');
   res.forEach((r, i) => {
-    g.push({id: r.ID, content: r.ID});
+    g.push({id: r.ID, content: r.ID, title: `age: P${duration(r.birth, today)}`});
     e.push({id: 'life' + i, start: r.birth, end: r.death || endYear, type: 'background', className: r.sex, group: r.ID});
   });
   const groups = new vis.DataSet(g);
@@ -45,10 +45,13 @@ module.exports.load = () => {
     }
   };
 
-  function toggleStackSubgroups() {
-      options.stackSubgroups = !options.stackSubgroups;
-      timeline.setOptions(options);
-  }
-
   const timeline = new vis.Timeline(container, items, groups, options);
+  return timeline;
 };
+
+function duration(first, second) {
+  const oneDay = 24 * 60 * 60 * 1000; // Hours*minutes*seconds*milliseconds
+  const start = new Date(first);
+  const end = new Date(second);
+  return Math.round(Math.abs((start.getTime() - end.getTime()) / (oneDay)));
+}
