@@ -9,16 +9,16 @@ module.exports.load = () => {
   });
 
   // Request Males & add in father list
-  let res = db.select('SELECT mouseID FROM mice WHERE sex="male"');
+  let res = db.select('SELECT ID FROM mice WHERE sex="male"');
   let sel = $('#father');
   res.forEach(r => {
-    sel.append(`<option>${r.mouseID}</option>`);
+    sel.append(`<option>${r.ID}</option>`);
   });
   // Request Female & add in mother list
-  res = db.select('SELECT mouseID FROM mice WHERE sex="female"');
+  res = db.select('SELECT ID FROM mice WHERE sex="female"');
   sel = $('#mother');
   res.forEach(r => {
-    sel.append(`<option>${r.mouseID}</option>`);
+    sel.append(`<option>${r.ID}</option>`);
   });
 
   // Submit
@@ -34,7 +34,8 @@ module.exports.load = () => {
       father: $('#father').val(),
       mother: $('#mother').val(),
       genotype: $('#genotype').val(),
-      validated: $('#validated')[0].checked ? 1 : 0
+      validated: $('#validated')[0].checked ? 1 : 0,
+      box: null
     };
     console.log('form', insert);
     db.insert(insert);

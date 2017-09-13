@@ -21,14 +21,15 @@ module.exports.load = () => {
       db = new sql.Database();
       // Init db
       const sqlstr = 'CREATE TABLE IF NOT EXISTS mice (' +
-      'mouseID TEXT PRIMARY KEY NOT NULL,' +
+      'ID TEXT PRIMARY KEY NOT NULL,' +
       'birth TEXT,' +
       'death TEXT,' +
       'sex TEXT,' +
       'father TEXT,' +
       'mother TEXT,' +
       'genotype TEXT,' +
-      'validated INTEGER' +
+      'validated INTEGER,' +
+      'box TEXT' +
       ');';
 
       db.run(sqlstr); // Run the query without returning anything
@@ -56,11 +57,19 @@ module.exports.insert = d => {
   let str;
   switch (d.table) {
     case 'mice':
-      str = `INSERT INTO ${d.table} VALUES (?,?,?,?,?,?,?,?)`;
-      db.run(str, [d.id, d.birth, d.death, d.sex, d.father, d.mother, d.genotype, d.validated]);
+      str = `INSERT INTO ${d.table} VALUES (?,?,?,?,?,?,?,?,?)`;
+      db.run(str, [d.id, d.birth, d.death, d.sex, d.father, d.mother, d.genotype, d.validated, d.box]);
       break;
     default:
   }
+  console.log(str, d);
+  write();
+};
+
+// Update a line in the database and save
+module.exports.update = d => {
+  const str = `UPDATE ${d.table} SET ${d.set} WHERE ID="${d.id}"`;
+  db.run(str);
   console.log(str, d);
   write();
 };

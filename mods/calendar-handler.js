@@ -19,10 +19,10 @@ module.exports.load = () => {
   const endMonth = new Date(y, m + 1, 0).toISOString();
   const endYear = new Date(y, 11, 31).toISOString();
   // Get Mices
-  const res = db.select('SELECT mouseID, birth, death, sex FROM mice');
+  const res = db.select('SELECT ID, birth, death, sex FROM mice');
   res.forEach((r, i) => {
-    g.push({id: r.mouseID, content: r.mouseID});
-    e.push({id: 'life' + i, start: r.birth, end: r.death || endYear, type: 'background', className: r.sex, group: r.mouseID});
+    g.push({id: r.ID, content: r.ID});
+    e.push({id: 'life' + i, start: r.birth, end: r.death || endYear, type: 'background', className: r.sex, group: r.ID});
   });
   const groups = new vis.DataSet(g);
 

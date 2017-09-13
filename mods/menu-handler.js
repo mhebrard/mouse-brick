@@ -1,5 +1,6 @@
 /* global db:true $:true */
 const calendar = require('./calendar-handler.js');
+const event = require('./event-handler.js');
 const addmouse = require('./addmouse-handler.js');
 
 module.exports.load = () => {
@@ -10,6 +11,12 @@ module.exports.load = () => {
   });
   // Init
   $('#home').click();
+
+  // Include event
+  $('#event').click(() => {
+    console.log('New Event clicked');
+    $('#content').load('./mods/event.html', event.load);
+  });
 
   // Include add mouse form + handler
   $('#add').click(() => {
