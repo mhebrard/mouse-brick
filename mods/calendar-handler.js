@@ -19,16 +19,18 @@ module.exports.load = () => {
   const endMonth = new Date(y, m + 1, 0).toISOString();
   const endYear = new Date(y, 11, 31).toISOString();
   // Get Mices
-  const res = db.select('SELECT ID, birth, death, sex FROM mice');
+  let res = db.select('SELECT ID, birth, death, sex FROM mice');
   res.forEach((r, i) => {
     g.push({id: r.ID, content: r.ID});
     e.push({id: 'life' + i, start: r.birth, end: r.death || endYear, type: 'background', className: r.sex, group: r.ID});
   });
   const groups = new vis.DataSet(g);
 
-  // Add items to the DataSet
-  e.push({id: 0, content: 'blabla', start: '2017-09-22', end: '2017-09-22', group: 'L41 #2'});
-  e.push({id: 1, content: 'bloblo', start: '2017-09-20', end: '2017-09-25', group: 'L41 #4'});
+  // Get Events
+  res = db.select('SELECT * FROM events');
+  res.forEach(r => {
+    e.push({id: r.ID, content: r.label, start: r.start, end: null, group: r.mouse, title: `(P${r.day}) ${r.desc}`});
+  });
   items.add(e);
 
   const options = {
@@ -37,7 +39,10 @@ module.exports.load = () => {
     end: endMonth,
     editable: false,
     stack: false,
-    stackSubgroups: true
+    stackSubgroups: true,
+    tooltip: {
+      followMouse: true
+    }
   };
 
   function toggleStackSubgroups() {

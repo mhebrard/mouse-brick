@@ -27,6 +27,7 @@ module.exports.load = () => {
   // Select
   $('#select').click(() => {
     console.log('select clicked');
-    console.log(db.select('SELECT * from Mice'));
+    console.log('mice', db.select('SELECT * from mice'));
+    console.log('events', db.select('SELECT * from events'));
   });
 };

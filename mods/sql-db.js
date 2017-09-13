@@ -30,6 +30,16 @@ module.exports.load = () => {
       'genotype TEXT,' +
       'validated INTEGER,' +
       'box TEXT' +
+      '); ' +
+      'CREATE TABLE IF NOT EXISTS events (' +
+      'ID INTEGER PRIMARY KEY,' +
+      'type TEXT,' +
+      'label TEXT,' +
+      'desc TEXT,' +
+      'mouse TEXT,' +
+      'start TEXT,' +
+      'end TEXT,' +
+      'day INTEGER' +
       ');';
 
       db.run(sqlstr); // Run the query without returning anything
@@ -59,6 +69,10 @@ module.exports.insert = d => {
     case 'mice':
       str = `INSERT INTO ${d.table} VALUES (?,?,?,?,?,?,?,?,?)`;
       db.run(str, [d.id, d.birth, d.death, d.sex, d.father, d.mother, d.genotype, d.validated, d.box]);
+      break;
+    case 'events':
+      str = `INSERT INTO ${d.table} (type, label, desc, mouse, start, end, day) VALUES (?,?,?,?,?,?,?)`;
+      db.run(str, [d.type, d.label, d.desc, d.mouse, d.start, d.end, d.day]);
       break;
     default:
   }

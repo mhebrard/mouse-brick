@@ -37,7 +37,7 @@ module.exports.load = () => {
   });
 
   // Request Mouse for id, mother, father
-  const res = db.select('SELECT ID, sex FROM mice');
+  const res = db.select('SELECT ID, sex FROM mice WHERE death IS NULL');
   const s = $('#mouse');
   const m = $('#mother');
   const f = $('#father');
@@ -57,10 +57,12 @@ module.exports.load = () => {
     let opts;
     switch ($('#type option:selected').text()) {
       case 'Birth': {
+        const id = $('#id').val();
+        const birth = $('#birth').val();
         opts = {
           table: 'mice',
-          id: $('#id').val(),
-          birth: $('#birth').val(),
+          id,
+          birth,
           death: null,
           sex: $('input[name=sex]:checked').val(),
           father: $('#father').val(),
@@ -70,15 +72,39 @@ module.exports.load = () => {
           box: $('#box').val()
         };
         db.insert(opts);
+        opts = {
+          table: 'events',
+          type: 'birth',
+          label: 'birth',
+          desc: 'the mouse is born',
+          mouse: id,
+          start: birth,
+          end: null,
+          day: 0
+        };
+        db.insert(opts);
         break;
       }
       case 'Death': {
+        const id = $('#mouse option:selected').text();
+        const date = $('#death').val();
         opts = {
           table: 'mice',
-          id: $('#mouse option:selected').text(),
-          set: `death="${$('#birth').val()}"`
+          id,
+          set: `death="${date}"`
         };
         db.update(opts);
+        opts = {
+          table: 'events',
+          type: 'death',
+          label: 'death',
+          desc: 'the mouse died',
+          mouse: id,
+          start: date,
+          end: null,
+          day: days(date, id)
+        };
+        db.insert(opts);
         break;
       }
       default:
@@ -87,3 +113,14 @@ module.exports.load = () => {
     $('#event').click();
   });
 };
+
+function days(date, id) {
+  const res = db.select(`SELECT birth FROM mice WHERE ID="${id}"`);
+  console.log('days res', res);
+  const oneDay = 24 * 60 * 60 * 1000; // Hours*minutes*seconds*milliseconds
+  const start = new Date(res[0].birth);
+  const end = new Date(date);
+  const day = Math.round(Math.abs((start.getTime() - end.getTime()) / (oneDay)));
+  console.log(start, end, day);
+  return day
+}

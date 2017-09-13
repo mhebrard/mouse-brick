@@ -15,6 +15,21 @@ body {
 .vis-item.vis-background.female {
   background-color: rgba(246, 213, 221, 0.4);
 }
-.vis-item.vis-background.marker {
-  border-left: 2px solid green;
+
+div.vis-tooltip {
+ position:absolute;
+ visibility:hidden;
+ padding:5px;
+ white-space:nowrap;
+ font-family:verdana;
+ font-size:14px;
+ color:#000;
+ background-color:#f5f4ed;
+ -moz-border-radius:3px;
+ -webkit-border-radius:3px;
+ border-radius:3px;
+ border:1px solid #808074;
+ box-shadow:3px 3px 10px rgba(0,0,0,.2);
+ pointer-events:none;
+ z-index:5
 }
