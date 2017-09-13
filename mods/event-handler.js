@@ -38,6 +38,14 @@ module.exports.load = () => {
         $('#div-box').css('display', 'flex');
         $('#div-submit').css('display', 'flex');
         break;
+      case 'Genotype':
+        $('#addEvent div.form-group').css('display', 'none');
+        $('#div-type').css('display', 'flex');
+        $('#div-mouse').css('display', 'flex');
+        $('#div-date').css('display', 'flex');
+        $('#div-genotype').css('display', 'flex');
+        $('#div-submit').css('display', 'flex');
+        break;
       default:
         $('#addEvent div.form-group').css('display', 'none');
         $('#div-type').css('display', 'flex');
@@ -134,6 +142,30 @@ module.exports.load = () => {
           type: 'move',
           label: 'move',
           desc: `move the mouse from ${oldbox} to ${newbox}`,
+          mouse: id,
+          start: date,
+          end: null,
+          day: days(date, id)
+        };
+        db.insert(opts);
+        break;
+      }
+      case 'Genotype': {
+        const id = $('#mouse option:selected').text();
+        const date = $('#date').val();
+        const gen = $('#genotype').val();
+        const v = $('#validated')[0].checked ? 1 : 0;
+        opts = {
+          table: 'mice',
+          id,
+          set: `genotype="${gen}", validated=${v}`
+        };
+        db.update(opts);
+        opts = {
+          table: 'events',
+          type: 'genotype',
+          label: 'genotype',
+          desc: `the genotype ${gen} of the mouse is ${v === 1 ? '' : 'not'} confirmed`,
           mouse: id,
           start: date,
           end: null,
