@@ -25,7 +25,8 @@
   "dependencies": {
     "electron": "^1.7.6",
     "graceful-fs": "^4.1.11",
-    "sql.js": "^0.4.0"
+    "sql.js": "^0.4.0",
+    "vis": "^4.20.1"
   },
   "devDependencies": {
     "electron": "^1.7.6",

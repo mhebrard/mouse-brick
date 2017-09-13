@@ -1,0 +1,25 @@
+/* global db:true $:true */
+const calendar = require('./calendar-handler.js');
+const addmouse = require('./addmouse-handler.js');
+
+module.exports.load = () => {
+  // Include calendar
+  $('#home').click(() => {
+    console.log('Calendar clicked');
+    $('#content').load('./mods/calendar.html', calendar.load);
+  });
+  // Init
+  $('#home').click();
+
+  // Include add mouse form + handler
+  $('#add').click(() => {
+    console.log('Add mouse clicked');
+    $('#content').load('./mods/addmouse-form.html', addmouse.load);
+  });
+
+  // Select
+  $('#select').click(() => {
+    console.log('select clicked');
+    console.log(db.select('SELECT * from Mice'));
+  });
+};

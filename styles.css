@@ -1,0 +1,20 @@
+body {
+  margin: 5px 20px;
+}
+.header {
+  text-align: center;
+}
+#content {
+  margin: 50px 0px;
+}
+
+/* vis */
+.vis-item.vis-background.male {
+  background-color: rgba(213, 221, 246, 0.4);
+}
+.vis-item.vis-background.female {
+  background-color: rgba(246, 213, 221, 0.4);
+}
+.vis-item.vis-background.marker {
+  border-left: 2px solid green;
+}
