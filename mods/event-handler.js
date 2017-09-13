@@ -19,9 +19,16 @@ module.exports.load = () => {
   $('#div-type').change(() => {
     switch ($('#type option:selected').text()) {
       case 'Birth':
-        $('#addEvent div.form-group').css('display', 'flex');
-        $('#div-mouse').css('display', 'none');
-        $('#div-date').css('display', 'none');
+        $('#addEvent div.form-group').css('display', 'none');
+        $('#div-type').css('display', 'flex');
+        $('#div-id').css('display', 'flex');
+        $('#div-birth').css('display', 'flex');
+        $('#div-sex').css('display', 'flex');
+        $('#div-mother').css('display', 'flex');
+        $('#div-father').css('display', 'flex');
+        $('#div-genotype').css('display', 'flex');
+        $('#div-box').css('display', 'flex');
+        $('#div-submit').css('display', 'flex');
         break;
       case 'Death':
         $('#addEvent div.form-group').css('display', 'none');
@@ -44,6 +51,15 @@ module.exports.load = () => {
         $('#div-mouse').css('display', 'flex');
         $('#div-date').css('display', 'flex');
         $('#div-genotype').css('display', 'flex');
+        $('#div-submit').css('display', 'flex');
+        break;
+      case 'Other':
+        $('#addEvent div.form-group').css('display', 'none');
+        $('#div-type').css('display', 'flex');
+        $('#div-label').css('display', 'flex');
+        $('#div-desc').css('display', 'flex');
+        $('#div-mouse').css('display', 'flex');
+        $('#div-date').css('display', 'flex');
         $('#div-submit').css('display', 'flex');
         break;
       default:
@@ -166,6 +182,24 @@ module.exports.load = () => {
           type: 'genotype',
           label: 'genotype',
           desc: `the genotype ${gen} of the mouse is ${v === 1 ? '' : 'not'} confirmed`,
+          mouse: id,
+          start: date,
+          end: null,
+          day: days(date, id)
+        };
+        db.insert(opts);
+        break;
+      }
+      case 'Other': {
+        const label = $('#label').val();
+        const desc = $('#desc').val();
+        const id = $('#mouse option:selected').text();
+        const date = $('#date').val();
+        opts = {
+          table: 'events',
+          type: 'other',
+          label,
+          desc,
           mouse: id,
           start: date,
           end: null,
