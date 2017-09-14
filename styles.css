@@ -18,6 +18,9 @@ form label {
 .vis-item.vis-background.female {
   background-color: rgba(246, 213, 221, 0.4);
 }
+.vis-item-content, .vis-inner {
+  cursor: pointer;
+}
 
 div.vis-tooltip {
  position:absolute;

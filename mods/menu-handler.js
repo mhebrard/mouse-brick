@@ -7,7 +7,8 @@ const mouseinfo = require('./mouse-info-handler')
 module.exports.load = () => {
   // Include calendar
   $('#home').click(() => {
-    console.log('Calendar clicked');
+    $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+    $('#home').removeClass('btn-outline-primary').addClass('btn-primary');
     $('#content').load('./mods/calendar.html', calendar.load);
   });
   // Init
@@ -16,18 +17,24 @@ module.exports.load = () => {
   // Include event
   $('#event').click(() => {
     console.log('New Event clicked');
+    $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+    $('#event').removeClass('btn-outline-primary').addClass('btn-primary');
     $('#content').load('./mods/event.html', event.load);
   });
 
   // Include mice list
   $('#mice').click(() => {
     console.log('Mice List clicked');
+    $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+    $('#mice').removeClass('btn-outline-primary').addClass('btn-primary');
     $('#content').load('./mods/mice-list.html', micelist.load);
   });
 
-  // Select
+  // Include mouse info
   $('#info').click(() => {
     console.log('Mouse Info clicked');
+    $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+    $('#info').removeClass('btn-outline-primary').addClass('btn-primary');
     $('#content').load('./mods/mouse-info.html', mouseinfo.load);
   });
 };

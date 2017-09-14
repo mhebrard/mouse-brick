@@ -38,7 +38,7 @@ module.exports.load = () => {
     start: startMonth,
     end: endMonth,
     editable: false,
-    // C stack: false,
+    stack: false,
     tooltip: {
       followMouse: true
     }
@@ -58,6 +58,13 @@ module.exports.load = () => {
       });
     }
   };
+
+  // Toogle
+  $('#toogleGroup').click(() => {
+    options.stack = !options.stack;
+    timeline.setOptions(options);
+  });
+
   return timeline;
 };
 
