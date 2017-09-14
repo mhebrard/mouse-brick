@@ -7,6 +7,9 @@ body {
 #content {
   margin: 50px 0px;
 }
+form label {
+  font-weight: bold;
+}
 
 /* vis */
 .vis-item.vis-background.male {
