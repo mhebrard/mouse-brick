@@ -38,8 +38,7 @@ module.exports.load = () => {
     start: startMonth,
     end: endMonth,
     editable: false,
-    stack: false,
-    stackSubgroups: true,
+    // C stack: false,
     tooltip: {
       followMouse: true
     }

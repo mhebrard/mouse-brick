@@ -1,7 +1,7 @@
 /* global db:true $:true */
 const calendar = require('./calendar-handler.js');
 const event = require('./event-handler.js');
-const addmouse = require('./addmouse-handler.js');
+const micelist = require('./mice-list-handler.js');
 
 module.exports.load = () => {
   // Include calendar
@@ -18,10 +18,10 @@ module.exports.load = () => {
     $('#content').load('./mods/event.html', event.load);
   });
 
-  // Include add mouse form + handler
-  $('#add').click(() => {
-    console.log('Add mouse clicked');
-    $('#content').load('./mods/addmouse-form.html', addmouse.load);
+  // Include mice list
+  $('#mice').click(() => {
+    console.log('Mice list clicked');
+    $('#content').load('./mods/mice-list.html', micelist.load);
   });
 
   // Select

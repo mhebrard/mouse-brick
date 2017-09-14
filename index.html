@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
   </head>
   <body>
     <div class="header">
@@ -15,14 +16,16 @@
       <div class="btn-group" role="group" aria-label="menu">
         <button type="button" id="home" class="btn btn-outline-primary">Calendar</button>
         <button type="button" id="event" class="btn btn-outline-primary">New Event</button>
-        <button type="button" id="add" class="btn btn-outline-primary">Add Mouse</button>
+        <button type="button" id="mice" class="btn btn-outline-primary">Mice List</button>
         <button type="button" id="select" class="btn btn-outline-primary">Select</button>
       </div>
     </div>
-    <div id="content"/>
-
+    <div class="container">
+      <div id="content"/>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
   </body>
   <script>
     require('./renderer.js');
