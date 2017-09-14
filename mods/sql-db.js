@@ -107,6 +107,16 @@ module.exports.select = str => {
   return [];
 };
 
+module.exports.export = () => {
+  return Buffer.from(db.export());
+};
+
+module.exports.import = data => {
+  const Uints = new Uint8Array(data);
+  db = new sql.Database(Uints);
+  write();
+};
+
 function write() {
   // Write to disk
   const data = db.export();

@@ -2,7 +2,8 @@
 const calendar = require('./calendar-handler');
 const event = require('./event-handler');
 const micelist = require('./mice-list-handler');
-const mouseinfo = require('./mouse-info-handler')
+const mouseinfo = require('./mouse-info-handler');
+const io = require('./export-handler');
 
 module.exports.load = () => {
   // Include calendar
@@ -36,5 +37,13 @@ module.exports.load = () => {
     $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
     $('#info').removeClass('btn-outline-primary').addClass('btn-primary');
     $('#content').load('./mods/mouse-info.html', mouseinfo.load);
+  });
+
+  // Inclide export
+  $('#export').click(() => {
+    console.log('Export clicked');
+    $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+    $('#export').removeClass('btn-outline-primary').addClass('btn-primary');
+    $('#content').load('./mods/export.html', io.load);
   });
 };
