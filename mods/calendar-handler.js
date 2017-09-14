@@ -21,7 +21,8 @@ module.exports.load = () => {
   // Get Mices
   let res = db.select('SELECT ID, birth, death, sex FROM mice');
   res.forEach((r, i) => {
-    g.push({id: r.ID, content: r.ID, title: `age: P${duration(r.birth, today)}`});
+    const age = r.death ? -1 : duration(r.birth, today);
+    g.push({id: r.ID, content: r.ID, title: `age: ${age < 0 ? 'dead' : 'P' + age}`, age});
     e.push({id: 'life' + i, start: r.birth, end: r.death || endYear, type: 'background', className: r.sex, group: r.ID});
   });
   const groups = new vis.DataSet(g);
@@ -41,6 +42,10 @@ module.exports.load = () => {
     stack: false,
     tooltip: {
       followMouse: true
+    },
+    groupOrder(a, b) {
+      // Elder first, Younger, then Dead
+      return b.age - a.age;
     }
   };
 
