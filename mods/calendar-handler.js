@@ -1,4 +1,4 @@
-/* global db:true */
+/* global $:true db:true */
 const vis = require('vis');
 
 module.exports.load = () => {
@@ -45,6 +45,19 @@ module.exports.load = () => {
   };
 
   const timeline = new vis.Timeline(container, items, groups, options);
+
+  // On click Manager
+  container.onclick = event => {
+    const props = timeline.getEventProperties(event);
+    console.log(props);
+    if (!props.item && props.group) {
+      $('#info').click();
+      $(document).ready(() => {
+        console.log('click ready');
+        $('#mouse').val(props.group).trigger('change');
+      });
+    }
+  };
   return timeline;
 };
 
