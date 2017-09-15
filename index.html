@@ -2,17 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Mouse BRICK</title>
+    <link rel="stylesheet" href="./styles.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div class="header">
+      <h1>Mouse BRICK</h1>
+      <h5>BReeding Interfaced Calendar Kit</h5>
+      <div class="btn-group" role="group" aria-label="menu">
+        <button type="button" id="home" class="btn btn-outline-primary">Calendar</button>
+        <button type="button" id="event" class="btn btn-outline-primary">New Event</button>
+        <button type="button" id="mice" class="btn btn-outline-primary">Mice List</button>
+        <button type="button" id="info" class="btn btn-outline-primary">Mouse Info</button>
+        <button type="button" id="export" class="btn btn-outline-primary">Database</button>
+        <button type="button" id="delete" class="btn btn-outline-primary">Delete Items</button>
+      </div>
+    </div>
+    <div class="container">
+      <div id="content"/>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
   </body>
-
   <script>
-    require('./renderer.js')
+    require('./renderer.js');
+    const menu = require('./mods/menu-handler.js');
+    const db = require('./mods/sql-db.js');
+
+    db.load() // Load database
+    .then(db => {
+      menu.load();
+      console.log('ready');
+    });
   </script>
 </html>
