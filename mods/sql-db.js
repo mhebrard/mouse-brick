@@ -17,35 +17,9 @@ module.exports.load = () => {
       db = new sql.Database(filebuffer);
       resolve(db);
     } else {
-    // Create new db
+      // Create new db
       db = new sql.Database();
-      // Init db
-      const sqlstr = 'CREATE TABLE IF NOT EXISTS mice (' +
-      'ID TEXT PRIMARY KEY NOT NULL,' +
-      'birth TEXT,' +
-      'death TEXT,' +
-      'sex TEXT,' +
-      'father TEXT,' +
-      'mother TEXT,' +
-      'genotype TEXT,' +
-      'validated INTEGER,' +
-      'box TEXT' +
-      '); ' +
-      'CREATE TABLE IF NOT EXISTS events (' +
-      'ID INTEGER PRIMARY KEY,' +
-      'type TEXT,' +
-      'label TEXT,' +
-      'desc TEXT,' +
-      'mouse TEXT,' +
-      'start TEXT,' +
-      'end TEXT,' +
-      'day INTEGER' +
-      ');';
-
-      db.run(sqlstr); // Run the query without returning anything
-
-      write();
-
+      module.exports.empty();
       // Return db
       resolve(db);
     }
@@ -60,6 +34,13 @@ module.exports.load = () => {
 // DO NOT save the database
 module.exports.exec = str => {
   return db.exec(str);
+};
+
+// Send a request to db
+// Do save the database
+module.exports.run = str => {
+  db.run(str);
+  write();
 };
 
 // Insert a new line in the database and save
@@ -114,6 +95,38 @@ module.exports.export = () => {
 module.exports.import = data => {
   const Uints = new Uint8Array(data);
   db = new sql.Database(Uints);
+  write();
+};
+
+module.exports.empty = () => {
+  // Init db
+  const sqlstr =
+  'DROP TABLE events; ' +
+  'DROP TABLE mice; ' +
+  'CREATE TABLE IF NOT EXISTS mice (' +
+  'ID TEXT PRIMARY KEY NOT NULL,' +
+  'birth TEXT,' +
+  'death TEXT,' +
+  'sex TEXT,' +
+  'father TEXT,' +
+  'mother TEXT,' +
+  'genotype TEXT,' +
+  'validated INTEGER,' +
+  'box TEXT' +
+  '); ' +
+  'CREATE TABLE IF NOT EXISTS events (' +
+  'ID INTEGER PRIMARY KEY,' +
+  'type TEXT,' +
+  'label TEXT,' +
+  'desc TEXT,' +
+  'mouse TEXT,' +
+  'start TEXT,' +
+  'end TEXT,' +
+  'day INTEGER' +
+  ');';
+
+  db.run(sqlstr); // Run the query without returning anything
+
   write();
 };
 

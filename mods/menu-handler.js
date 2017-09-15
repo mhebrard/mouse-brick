@@ -4,6 +4,7 @@ const event = require('./event-handler');
 const micelist = require('./mice-list-handler');
 const mouseinfo = require('./mouse-info-handler');
 const io = require('./export-handler');
+const del = require('./delete-handler');
 
 module.exports.load = () => {
   // Include calendar
@@ -45,5 +46,13 @@ module.exports.load = () => {
     $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
     $('#export').removeClass('btn-outline-primary').addClass('btn-primary');
     $('#content').load('./mods/export.html', io.load);
+  });
+
+  // Inclide delete
+  $('#delete').click(() => {
+    console.log('Delete clicked');
+    $('.header > .btn-group > .btn').removeClass('btn-primary').addClass('btn-outline-primary');
+    $('#delete').removeClass('btn-outline-primary').addClass('btn-primary');
+    $('#content').load('./mods/delete.html', del.load);
   });
 };
