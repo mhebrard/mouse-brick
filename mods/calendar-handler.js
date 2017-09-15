@@ -1,6 +1,8 @@
 /* global $:true db:true */
 const vis = require('vis');
 
+let range = 'month'; // Range: week | month | year
+
 module.exports.load = () => {
   console.log('calendar handler');
   // Get container
@@ -14,9 +16,6 @@ module.exports.load = () => {
   const e = [];
   const today = new Date(); // Today
   const y = today.getFullYear(); // Current year
-  const m = today.getMonth(); // Current month
-  const startMonth = new Date(y, m, 1).toISOString();
-  const endMonth = new Date(y, m + 1, 0).toISOString();
   const endYear = new Date(y, 11, 31).toISOString();
   // Get Mices
   let res = db.select('SELECT ID, birth, death, sex FROM mice');
@@ -34,10 +33,12 @@ module.exports.load = () => {
   });
   items.add(e);
 
+  // Range
+  const [start, end] = getRange(today);
   const options = {
     // Orientation:'top'
-    start: startMonth,
-    end: endMonth,
+    start,
+    end,
     editable: false,
     stack: false,
     tooltip: {
@@ -70,6 +71,29 @@ module.exports.load = () => {
     timeline.setOptions(options);
   });
 
+  // Today
+  $('#today').click(() => {
+    const [start, end] = getRange(today);
+    options.start = start;
+    options.end = end;
+    timeline.setOptions(options);
+  });
+  // Week
+  $('#week').click(() => {
+    range = 'week';
+    $('#today').click();
+  });
+  // Month
+  $('#month').click(() => {
+    range = 'month';
+    $('#today').click();
+  });
+  // Year
+  $('#year').click(() => {
+    range = 'year';
+    $('#today').click();
+  });
+
   return timeline;
 };
 
@@ -78,4 +102,35 @@ function duration(first, second) {
   const start = new Date(first);
   const end = new Date(second);
   return Math.round(Math.abs((start.getTime() - end.getTime()) / (oneDay)));
+}
+
+function getRange(today) {
+  const y = today.getFullYear(); // Current year
+  const m = today.getMonth(); // Current month
+  let start;
+  let end;
+  switch (range) {
+    case 'year':
+      start = new Date(y, 0, 1);
+      end = new Date(y, 11, 31);
+      break;
+    case 'month':
+      start = new Date(y, m, 1);
+      end = new Date(y, m + 1, 0);
+      break;
+    case 'week': {
+      // Copy date
+      const wd = today.getDay(); // Current weekday index
+      const d = today.getDate(); // Current day
+      start = new Date(today.getTime());
+      end = new Date(today.getTime());
+      const startShift = d - wd + 1; // Shift for sunday
+      const endShift = d - wd + 7; // Shift for saturday
+      start.setDate(startShift);
+      end.setDate(endShift);
+      break;
+    }
+    default:
+  }
+  return [start.toISOString(), end.toISOString()];
 }
