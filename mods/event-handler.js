@@ -2,7 +2,8 @@
 
 module.exports.load = () => {
   const today = new Date();
-// Initiate datepicker
+
+  // Initiate datepicker
   $('#addEvent input.date')
   .attr('value', `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`)
   .datepicker({
@@ -16,8 +17,8 @@ module.exports.load = () => {
   $('#div-type').css('display', 'flex');
 
   // Type on change
-  $('#div-type').change(() => {
-    switch ($('#type option:selected').text()) {
+  $('#type').change(() => {
+    switch ($('#type').val()) {
       case 'Birth':
         $('#addEvent div.form-group').css('display', 'none');
         $('#div-type').css('display', 'flex');
@@ -68,17 +69,33 @@ module.exports.load = () => {
     }
   });
 
+  // Mouse ID on change
+  $('#mouse').change(() => {
+    const id = $('#mouse').val();
+    console.log(id);
+    const res = db.select(`SELECT * FROM mice WHERE ID="${id}" LIMIT 1`);
+    const r = res[0];
+    $('#id').val(r.ID);
+    $('#birth').val(r.birth);
+    $(`input[name="sex"][value="${r.sex}"]`).prop('checked', true);
+    $('#mother').val(r.mother);
+    $('#father').val(r.father);
+    $('#genotype').val(r.genotype);
+    $('#validated').prop('checked', r.validated === 1);
+    $('#box').val(r.box);
+  });
+
   // Request Mouse for id, mother, father
   const res = db.select('SELECT ID, sex FROM mice WHERE death IS NULL');
   const s = $('#mouse');
   const m = $('#mother');
   const f = $('#father');
   res.forEach(r => {
-    s.append(`<option>${r.ID}</option>`);
+    s.append(`<option value="${r.ID}">${r.ID}</option>`);
     if (r.sex === 'male') {
-      f.append(`<option>${r.ID}</option>`);
+      f.append(`<option value="${r.ID}">${r.ID}</option>`);
     } else {
-      m.append(`<option>${r.ID}</option>`);
+      m.append(`<option value="${r.ID}">${r.ID}</option>`);
     }
   });
 
