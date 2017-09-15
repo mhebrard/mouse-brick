@@ -3,7 +3,7 @@
 module.exports.load = () => {
   const sel = $('#mouse');
   // Request Mice
-  const res = db.select('SELECT ID FROM mice');
+  const res = db.select('SELECT ID FROM mice ORDER BY ID');
   res.forEach(r => {
     sel.append(`<option>${r.ID}</option>`);
   });

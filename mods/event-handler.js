@@ -54,6 +54,15 @@ module.exports.load = () => {
         $('#div-genotype').css('display', 'flex');
         $('#div-submit').css('display', 'flex');
         break;
+      case 'Injection':
+      case 'Collection':
+        $('#addEvent div.form-group').css('display', 'none');
+        $('#div-type').css('display', 'flex');
+        $('#div-desc').css('display', 'flex');
+        $('#div-mouse').css('display', 'flex');
+        $('#div-date').css('display', 'flex');
+        $('#div-submit').css('display', 'flex');
+        break;
       case 'Other':
         $('#addEvent div.form-group').css('display', 'none');
         $('#div-type').css('display', 'flex');
@@ -86,7 +95,7 @@ module.exports.load = () => {
   });
 
   // Request Mouse for id, mother, father
-  const res = db.select('SELECT ID, sex FROM mice WHERE death IS NULL');
+  const res = db.select('SELECT ID, sex FROM mice WHERE death IS NULL ORDER BY ID');
   const s = $('#mouse');
   const m = $('#mother');
   const f = $('#father');
@@ -104,7 +113,8 @@ module.exports.load = () => {
     e.preventDefault();
     console.log('submit event');
     let opts;
-    switch ($('#type option:selected').text()) {
+    const type = $('#type option:selected').text();
+    switch (type) {
       case 'Birth': {
         const id = $('#id').val();
         const date = $('#birth').val();
@@ -123,8 +133,8 @@ module.exports.load = () => {
         db.insert(opts);
         opts = {
           table: 'events',
-          type: 'birth',
-          label: 'birth',
+          type,
+          label: type,
           desc: 'the mouse is born',
           mouse: id,
           start: date,
@@ -145,8 +155,8 @@ module.exports.load = () => {
         db.update(opts);
         opts = {
           table: 'events',
-          type: 'death',
-          label: 'death',
+          type,
+          label: type,
           desc: 'the mouse died',
           mouse: id,
           start: date,
@@ -172,8 +182,8 @@ module.exports.load = () => {
         db.update(opts);
         opts = {
           table: 'events',
-          type: 'move',
-          label: 'move',
+          type,
+          label: type,
           desc: `move the mouse from ${oldbox} to ${newbox}`,
           mouse: id,
           start: date,
@@ -196,9 +206,27 @@ module.exports.load = () => {
         db.update(opts);
         opts = {
           table: 'events',
-          type: 'genotype',
-          label: 'genotype',
+          type,
+          label: type,
           desc: `the genotype ${gen} of the mouse is ${v === 1 ? '' : 'not'} confirmed`,
+          mouse: id,
+          start: date,
+          end: null,
+          day: days(date, id)
+        };
+        db.insert(opts);
+        break;
+      }
+      case 'Injection':
+      case 'Collection': {
+        const desc = $('#desc').val();
+        const id = $('#mouse option:selected').text();
+        const date = $('#date').val();
+        opts = {
+          table: 'events',
+          type,
+          label: type,
+          desc,
           mouse: id,
           start: date,
           end: null,

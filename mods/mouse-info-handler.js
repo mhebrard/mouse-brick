@@ -4,7 +4,7 @@ module.exports.load = () => {
   const today = new Date();
   // Request Mice
   const sel = $('#mouse');
-  const res = db.select('SELECT ID FROM mice');
+  const res = db.select('SELECT ID FROM mice ORDER BY ID');
   res.forEach(r => {
     sel.append(`<option>${r.ID}</option>`);
   });
