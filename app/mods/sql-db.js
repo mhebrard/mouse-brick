@@ -1,10 +1,12 @@
 const sql = require('sql.js');
+const path = require('path');
 const fs = require('graceful-fs');
 
 // Global database
 let db;
-const dbPath = 'data/database.db';
-
+const dbPath = path.join(__dirname, '../data/database.db');
+console.log(dbPath);
+console.log(fs.existsSync(dbPath));
 // Load existing database
 // Or create a new one
 module.exports.load = () => {

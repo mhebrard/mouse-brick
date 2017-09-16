@@ -2,6 +2,7 @@
 const vis = require('vis');
 
 let range = 'month'; // Range: week | month | year
+let g = []; // Groups array;
 
 module.exports.load = () => {
   console.log('calendar handler');
@@ -12,7 +13,7 @@ module.exports.load = () => {
     type: {start: 'ISODate', end: 'ISODate'}
   });
   // Groups and events
-  const g = [];
+  g = [];
   const e = [];
   const today = new Date(); // Today
   const y = today.getFullYear(); // Current year
@@ -21,7 +22,7 @@ module.exports.load = () => {
   let res = db.select('SELECT ID, birth, death, sex FROM mice');
   res.forEach((r, i) => {
     const age = r.death ? -1 : duration(r.birth, today);
-    g.push({id: r.ID, content: r.ID, title: `age: ${age < 0 ? 'dead' : 'P' + age}`, age});
+    g.push({id: r.ID, content: r.ID, title: `age: ${age < 0 ? 'dead' : 'P' + age}`, age, visible: true});
     e.push({id: 'life' + i, start: r.birth, end: r.death || endYear, type: 'background', className: r.sex, group: r.ID});
   });
   const groups = new vis.DataSet(g);
@@ -65,10 +66,23 @@ module.exports.load = () => {
     }
   };
 
-  // Toogle
+  // Toogle Groop
   $('#toogleGroup').click(() => {
     options.stack = !options.stack;
     timeline.setOptions(options);
+  });
+  // Toogle Dead
+  $('#toogleDead').click(() => {
+    console.log('pre', g);
+    g.forEach(f => {
+      if (f.age < 0) {
+        f.visible = !f.visible;
+      }
+      return f;
+    });
+    console.log('post', g);
+    const groups = new vis.DataSet(g);
+    timeline.setGroups(groups);
   });
 
   // Today
