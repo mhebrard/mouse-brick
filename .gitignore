@@ -2,10 +2,10 @@
 node_modules/
 
 # Fav-icon
-# icon/
+# icons/
 
 # Pack
 packs/
 
 # Data
-data/
+app/data/
