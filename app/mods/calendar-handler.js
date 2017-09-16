@@ -56,8 +56,7 @@ module.exports.load = () => {
   // On click Manager
   container.onclick = event => {
     const props = timeline.getEventProperties(event);
-    console.log(props);
-    if (!props.item && props.group) {
+    if (props.what === 'group-label') {
       $('#info').click();
       $(document).ready(() => {
         console.log('click ready');
