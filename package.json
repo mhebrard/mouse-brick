@@ -1,13 +1,13 @@
 {
   "name": "mouse-brick",
   "productName": "Mouse BrICK",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Mouse BReeding Interfaced Calendar Kit is a project of desctop app to help managment of mice breeding.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack-mac": "electron-packager . --overwrite --platform=darwin --icon=icons/mac/icon.icns --prune=true --out=packs",
-    "pack-win": "electron-packager . --overwrite --platform=win32 --icon=icons/win/icon.ico --prune=true --out=packs --asar=true --version=1.0.0 --app-version=1.0.0",
+    "pack-win": "electron-packager . --overwrite --platform=win32 --icon=icons/win/icon.ico --pru1ne=true --out=packs --asar=true --version=1.1.0 --app-version=1.1.0",
     "pack-linux": "electron-packager . --overwrite --platform=linux --icon=icons/png/1024x1024.png --prune=true --out=packs",
     "test": "xo"
   },
